@@ -13,6 +13,8 @@ namespace AI2
     public partial class Form1 : Form
     {
         string [,] windows = new string[3, 3];
+        MiniMaxGame MiniMaxGame = new MiniMaxGame();
+        List<Button> GameButtons = new List<Button>();
         public Form1()
         {
             InitializeComponent();
@@ -20,15 +22,8 @@ namespace AI2
             HideGame();
             
         }
-        public void MIniMax(string[,] windows, bool computerTurn)
-        {
-
-        }
-        //public int evaluateLine(int row1, int col1, int row2, int col2, int row3, int col3)
-        //{
-        //    int score = 0;
-        //    return sc
-        //}
+        
+       
         public void HideGame()
         {
             var Buttons = ButtonsList();
@@ -40,10 +35,10 @@ namespace AI2
             var Buttons = ButtonsList();
             foreach (var b in Buttons)
                 b.Show();
+            
         }
         public List<Button> ButtonsList()
         {
-            var GameButtons = new List<Button>();
             GameButtons.Add(button1);
             GameButtons.Add(button2);
             GameButtons.Add(button3);
@@ -68,78 +63,90 @@ namespace AI2
         {
             
             ShowGame();
-            foreach (var b in ButtonsList())
+            for (int i = 0; i < 9; i++)
             {
-                b.Enabled = true;
-                b.Text = "";
+                MiniMaxGame.gameBoard[i] = " ";
             }
-            for (int i = 0; i < 3; i++)
-                for (int j = 0; j < 3; j++)
-                    windows[i, j] = "";
-
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             button1.Text = comboBox1.SelectedItem.ToString();
             windows[0, 0] = comboBox1.SelectedItem.ToString();
-            button1.Enabled = false;
+            MakeMove(0);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             button2.Text = comboBox1.SelectedItem.ToString();
             windows[1, 0] = comboBox1.SelectedItem.ToString();
-            button2.Enabled = false;
+            MakeMove(1);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             button3.Text = comboBox1.SelectedItem.ToString();
             windows[2, 0] = comboBox1.SelectedItem.ToString();
-            button3.Enabled = false;
+            MakeMove(2);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             button4.Text = comboBox1.SelectedItem.ToString();
             windows[0, 1] = comboBox1.SelectedItem.ToString();
-            button4.Enabled = false;
+            MakeMove(3);
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             button5.Text = comboBox1.SelectedItem.ToString();
             windows[1, 1] = comboBox1.SelectedItem.ToString();
-            button5.Enabled = false;
+            MakeMove(4);
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
             button6.Text = comboBox1.SelectedItem.ToString();
             windows[2, 1] = comboBox1.SelectedItem.ToString();
-            button6.Enabled = false;
+            MakeMove(5);
         }
 
         private void button7_Click(object sender, EventArgs e)
         { 
             button7.Text = comboBox1.SelectedItem.ToString();
             windows[0, 2] = comboBox1.SelectedItem.ToString();
-            button7.Enabled = false;
+            MakeMove(6);
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
             button8.Text = comboBox1.SelectedItem.ToString();
             windows[1, 2] = comboBox1.SelectedItem.ToString();
-            button8.Enabled = false;
+            MakeMove(7);
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
             button9.Text = comboBox1.SelectedItem.ToString();
             windows[2, 2] = comboBox1.SelectedItem.ToString();
-            button9.Enabled = false;
+            MakeMove(8);
+        }
+        private void MakeMove(int index)
+        {
+            MiniMaxGame.gameBoard[index] = "x";
+            ResultMinMax res = MiniMaxGame.MinMax(MiniMaxGame.gameBoard, "MAX", 0,0);          
+            for (int i = 0; i < 9; i++)
+            {    
+                    if (res.matrix[i] != MiniMaxGame.gameBoard[i])
+                    {
+                        MiniMaxGame.gameBoard[i] = "o";
+                        GameButtons[i].Text = "O";
+                        return;
+                    }                
+           }
+            
+            return;
         }
     }
 }
